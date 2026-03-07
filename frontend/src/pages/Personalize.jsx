@@ -15,14 +15,20 @@ function Personalize() {
     interests: [],
   });
 
-  const moods = ["🏔 Adventure", "🌴 Relax", "❤️ Romantic", "🛕 Spiritual"];
+  const moods = [
+    { label: "Adventure", icon: "🏔" },
+    { label: "Relax", icon: "🌴" },
+    { label: "Romantic", icon: "❤️" },
+    { label: "Spiritual", icon: "🛕" },
+  ];
+
   const interestsList = [
-    "Food",
-    "Trekking",
-    "Nightlife",
-    "Photography",
-    "Shopping",
-    "Beaches",
+    "🍕 Food",
+    "🥾 Trekking",
+    "🎶 Nightlife",
+    "📸 Photography",
+    "🛍 Shopping",
+    "🏖 Beaches",
   ];
 
   const toggleInterest = (interest) => {
@@ -39,38 +45,58 @@ function Personalize() {
 
   return (
     <div
-      className="min-h-screen bg-cover bg-center flex items-center justify-center text-white relative p-6"
+      className="min-h-screen bg-cover bg-center flex items-center justify-center relative p-6"
       style={{ backgroundImage: `url(${bg})` }}
     >
-      <div className="absolute inset-0 bg-black/50"></div>
+      {/* overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/50 to-indigo-900/50"></div>
 
-      <div className="relative backdrop-blur-xl bg-white/10 border border-white/20 p-10 rounded-3xl w-[500px]">
+      {/* card */}
+      <div className="relative backdrop-blur-2xl bg-white/8 border border-white/15
+      shadow-2xl p-10 rounded-3xl w-[540px] text-white animate-fade">
 
-        <h2 className="text-3xl font-semibold mb-8 text-center">
-          Tell Us About You ✈️
+        {/* Step Progress */}
+        <div className="mb-6">
+          <div className="flex justify-between text-xs text-white/50 mb-2 uppercase tracking-wider">
+            <span>Step 1</span>
+            <span>Step 3</span>
+          </div>
+          <div className="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+            <div className="bg-gradient-to-r from-blue-400 to-indigo-400 h-1.5 rounded-full w-1/3 transition-all duration-500"></div>
+          </div>
+        </div>
+
+        <h2 className="text-3xl font-bold mb-2 text-center">
+          Personalize Your Journey ✈️
         </h2>
 
+        <p className="text-center text-white/50 mb-8 text-sm">
+          Tell Safarnama your preferences and we'll craft your perfect trip
+        </p>
+
         {/* BASIC INFO */}
-        <div className="grid grid-cols-2 gap-4 mb-6">
+        <div className="grid grid-cols-2 gap-3 mb-5">
           <input
             placeholder="Name"
-            className="p-3 rounded-lg bg-white/20 border border-white/30"
+            className="p-3 rounded-xl bg-white/10 border border-white/15
+            focus:ring-2 focus:ring-indigo-400 focus:bg-white/15 outline-none placeholder-white/40 transition-all duration-300"
             onChange={(e) =>
               setFormData({ ...formData, name: e.target.value })
             }
           />
-
           <input
             placeholder="Age"
-            className="p-3 rounded-lg bg-white/20 border border-white/30"
+            type="number"
+            className="p-3 rounded-xl bg-white/10 border border-white/15
+            focus:ring-2 focus:ring-indigo-400 focus:bg-white/15 outline-none placeholder-white/40 transition-all duration-300"
             onChange={(e) =>
               setFormData({ ...formData, age: e.target.value })
             }
           />
-
           <input
             placeholder="City"
-            className="p-3 rounded-lg bg-white/20 border border-white/30 col-span-2"
+            className="p-3 rounded-xl bg-white/10 border border-white/15 col-span-2
+            focus:ring-2 focus:ring-indigo-400 focus:bg-white/15 outline-none placeholder-white/40 transition-all duration-300"
             onChange={(e) =>
               setFormData({ ...formData, city: e.target.value })
             }
@@ -79,50 +105,54 @@ function Personalize() {
 
         {/* GENDER */}
         <select
-          className="w-full p-3 mb-6 rounded-lg bg-white/20 border border-white/30"
+          className="w-full p-3 mb-5 rounded-xl bg-white/10 border border-white/15
+          focus:ring-2 focus:ring-indigo-400 outline-none text-white/80 transition-all duration-300"
           onChange={(e) =>
             setFormData({ ...formData, gender: e.target.value })
           }
         >
-          <option value="">Select Gender</option>
-          <option>Male</option>
-          <option>Female</option>
-          <option>Other</option>
+          <option value="" className="text-gray-900">Select Gender</option>
+          <option className="text-gray-900">Male</option>
+          <option className="text-gray-900">Female</option>
+          <option className="text-gray-900">Other</option>
         </select>
 
         {/* MOOD */}
-        <h3 className="mb-3 font-medium">Your Travel Mood</h3>
+        <h3 className="mb-3 font-medium text-sm uppercase tracking-wider text-white/60">Your Travel Mood</h3>
 
-        <div className="grid grid-cols-2 gap-3 mb-6">
+        <div className="grid grid-cols-2 gap-3 mb-5">
           {moods.map((mood) => (
             <button
-              key={mood}
+              key={mood.label}
               onClick={() =>
-                setFormData({ ...formData, mood })
+                setFormData({ ...formData, mood: mood.label })
               }
-              className={`p-3 rounded-lg border ${
-                formData.mood === mood
-                  ? "bg-white text-black"
-                  : "border-white/30"
+              className={`p-3.5 rounded-xl border transition-all duration-300 flex items-center justify-center gap-2 text-sm font-medium
+              ${
+                formData.mood === mood.label
+                  ? "bg-white text-black scale-105 shadow-lg shadow-white/20 border-transparent"
+                  : "border-white/15 hover:bg-white/15 hover:border-white/30"
               }`}
             >
-              {mood}
+              <span className="text-lg">{mood.icon}</span>
+              <span>{mood.label}</span>
             </button>
           ))}
         </div>
 
         {/* INTERESTS */}
-        <h3 className="mb-3 font-medium">Your Interests</h3>
+        <h3 className="mb-3 font-medium text-sm uppercase tracking-wider text-white/60">Your Interests</h3>
 
-        <div className="flex flex-wrap gap-3 mb-6">
+        <div className="flex flex-wrap gap-2 mb-5">
           {interestsList.map((interest) => (
             <button
               key={interest}
               onClick={() => toggleInterest(interest)}
-              className={`px-4 py-2 rounded-full border ${
+              className={`px-4 py-2 rounded-full border text-sm transition-all duration-300
+              ${
                 formData.interests.includes(interest)
-                  ? "bg-white text-black"
-                  : "border-white/30"
+                  ? "bg-white text-black shadow-md border-transparent"
+                  : "border-white/20 hover:bg-white/15"
               }`}
             >
               {interest}
@@ -132,38 +162,43 @@ function Personalize() {
 
         {/* BUDGET */}
         <select
-          className="w-full p-3 mb-4 rounded-lg bg-white/20 border border-white/30"
+          className="w-full p-3 mb-3 rounded-xl bg-white/10 border border-white/15
+          focus:ring-2 focus:ring-indigo-400 outline-none text-white/80 transition-all duration-300"
           onChange={(e) =>
             setFormData({ ...formData, budget: e.target.value })
           }
         >
-          <option value="">Budget</option>
-          <option>Low</option>
-          <option>Medium</option>
-          <option>Luxury</option>
+          <option value="" className="text-gray-900">Budget</option>
+          <option className="text-gray-900">Low</option>
+          <option className="text-gray-900">Medium</option>
+          <option className="text-gray-900">Luxury</option>
         </select>
 
         {/* WEATHER */}
         <select
-          className="w-full p-3 mb-8 rounded-lg bg-white/20 border border-white/30"
+          className="w-full p-3 mb-8 rounded-xl bg-white/10 border border-white/15
+          focus:ring-2 focus:ring-indigo-400 outline-none text-white/80 transition-all duration-300"
           onChange={(e) =>
             setFormData({ ...formData, weather: e.target.value })
           }
         >
-          <option value="">Preferred Weather</option>
-          <option>Cold ❄️</option>
-          <option>Warm ☀️</option>
-          <option>Snow ⛄</option>
-          <option>Beach 🌊</option>
+          <option value="" className="text-gray-900">Preferred Weather</option>
+          <option className="text-gray-900">Cold ❄️</option>
+          <option className="text-gray-900">Warm ☀️</option>
+          <option className="text-gray-900">Snow ⛄</option>
+          <option className="text-gray-900">Beach 🌊</option>
         </select>
 
-        {/* CONTINUE */}
+        {/* BUTTON */}
         <button
           onClick={() => navigate("/home")}
-          className="w-full bg-white text-black py-3 rounded-lg font-semibold hover:bg-gray-200 transition"
+          className="w-full py-3.5 rounded-xl font-semibold text-black
+          bg-gradient-to-r from-white to-gray-100
+          hover:scale-[1.02] hover:shadow-xl hover:shadow-white/20 transition-all duration-300"
         >
-          Continue
+          Continue →
         </button>
+
       </div>
     </div>
   );

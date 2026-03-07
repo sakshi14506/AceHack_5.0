@@ -11,6 +11,7 @@ import Share from "./pages/Share";
 import Profile from "./pages/Profile";
 import Explore from "./pages/Explore";
 import AIPlanner from "./pages/AIPlanner";
+
 function App() {
   return (
     <Router>
@@ -25,7 +26,7 @@ function App() {
         <Route path="/share" element={<Share />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/explore" element={<Explore />} />
-
+        <Route path="/ai-planner" element={<AIPlanner />} />
       </Routes>
     </Router>
   );
