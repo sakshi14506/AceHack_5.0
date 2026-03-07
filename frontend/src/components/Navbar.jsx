@@ -1,31 +1,18 @@
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
-    <nav className="flex justify-between items-center p-6 bg-white shadow">
+    <nav className="bg-black text-white p-4 flex justify-between items-center">
+      <h1 className="text-xl font-bold">SafarAI ✈️</h1>
 
-      <h1 className="text-2xl font-bold text-blue-600">
-        AI Travel Planner
-      </h1>
-
-      <div className="space-x-4">
-
-        <Link to="/login">
-          <button className="px-4 py-2 border rounded-lg">
-            Login
-          </button>
-        </Link>
-
-        <Link to="/planner">
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-lg">
-            Plan Trip
-          </button>
-        </Link>
-
+      <div className="flex gap-6">
+        <Link to="/home">Home</Link>
+        <Link to="/planner">Planner</Link>
+        <Link to="/share">Share</Link>
+        <Link to="/profile">Profile</Link>
       </div>
-
     </nav>
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;

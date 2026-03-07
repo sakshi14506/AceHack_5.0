@@ -1,19 +1,31 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import Landing from "./pages/Landing"
-import Login from "./pages/Login"
-import Planner from "./pages/Planner"
+import Landing from "./pages/Landing";
+import Login from "./pages/Login";
+import OTP from "./pages/OTP";
+import Personalize from "./pages/Personalize";
+import Home from "./pages/Home";
+import Planner from "./pages/Planner";
+import Results from "./pages/Results";
+import Share from "./pages/Share";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
-    <BrowserRouter>
+    <Router>
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/otp" element={<OTP />} />
+        <Route path="/personalize" element={<Personalize />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/planner" element={<Planner />} />
+        <Route path="/results" element={<Results />} />
+        <Route path="/share" element={<Share />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
-    </BrowserRouter>
-  )
+    </Router>
+  );
 }
 
-export default App
+export default App;
