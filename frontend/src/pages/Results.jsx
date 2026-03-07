@@ -5,6 +5,8 @@ import TripStory from "../components/TripStory";
 import ShareCard from "../components/ShareCard";
 import SmartRouteMap from "../components/SmartRouteMap";
 import WeatherCard from "../components/WeatherCard";
+import NearbyAttractions from "../components/NearbyAttractions";
+import AIChat from "../components/AIChat";
 import { extractPlaces } from "../utils/extractPlaces";
 import { generateItinerary } from "../utils/generateItinerary";
 
@@ -18,7 +20,6 @@ export default function Results() {
   const budget = state.budget || "Medium";
 
   const itinerary = generateItinerary(mood);
-
   const places = extractPlaces(itinerary);
 
   const heroImage =
@@ -28,7 +29,7 @@ export default function Results() {
 
     <div className="min-h-screen bg-gray-50">
 
-      {/* HERO SECTION */}
+      {/* HERO */}
 
       <div
         className="h-[45vh] bg-cover bg-center flex items-center justify-center"
@@ -51,23 +52,17 @@ export default function Results() {
 
       <div className="max-w-6xl mx-auto px-6 py-12">
 
-        {/* ITINERARY */}
-
         <h2 className="text-3xl font-bold mb-8">
           AI Generated Itinerary
         </h2>
 
         <ItineraryTimeline itinerary={itinerary} />
 
-        {/* ROUTE MAP */}
-
         <h2 className="text-3xl font-bold mt-16 mb-6">
-          Smart Route Map 🗺️
+          Smart Route Map
         </h2>
 
         <SmartRouteMap places={places} />
-
-        {/* DESTINATION MAP */}
 
         <h2 className="text-3xl font-bold mt-16 mb-6">
           Explore Destination
@@ -75,34 +70,17 @@ export default function Results() {
 
         <DestinationMap destination={destination} />
 
-        {/* WEATHER */}
+        <h2 className="text-3xl font-bold mt-16 mb-6">
+          Nearby Attractions
+        </h2>
+
+        <NearbyAttractions />
 
         <h2 className="text-3xl font-bold mt-16 mb-6">
-          Weather Forecast
+          Weather
         </h2>
 
         <WeatherCard destination={destination} />
-
-        {/* OUTFIT SUGGESTIONS */}
-
-        <h2 className="text-3xl font-bold mt-16 mb-6">
-          Outfit Suggestions
-        </h2>
-
-        <div className="bg-white p-6 rounded-xl shadow">
-
-          <ul className="space-y-2">
-
-            <li>👕 Light breathable clothes</li>
-            <li>🧢 Hat & sunglasses</li>
-            <li>👟 Comfortable walking shoes</li>
-            <li>🧴 Sunscreen & travel essentials</li>
-
-          </ul>
-
-        </div>
-
-        {/* PLAYLIST */}
 
         <h2 className="text-3xl font-bold mt-16 mb-6">
           Travel Playlist
@@ -115,23 +93,16 @@ export default function Results() {
           className="rounded-xl"
         />
 
-        {/* TRIP STORY */}
-
         <div className="mt-16">
-
-          <TripStory
-            destination={destination}
-            mood={mood}
-          />
-
+          <TripStory destination={destination} mood={mood} />
         </div>
 
-        {/* SHARE CARD */}
-
         <div className="mt-10">
-
           <ShareCard destination={destination} />
+        </div>
 
+        <div className="mt-16">
+          <AIChat />
         </div>
 
       </div>
