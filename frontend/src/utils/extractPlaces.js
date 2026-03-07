@@ -1,9 +1,18 @@
 export function extractPlaces(itinerary) {
 
-  if (!itinerary) return [];
+  const types = ["restaurant", "temple", "shopping"];
 
-  const places = itinerary.map((item) => item.title);
+  return itinerary.map((item, index) => ({
 
-  return places;
+    name: item.title,
+
+    type: types[index % types.length],
+
+    coords: [
+      28.6139 + index * 1.5,
+      77.2090 + index * 1.5
+    ]
+
+  }));
 
 }

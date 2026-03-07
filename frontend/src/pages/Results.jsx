@@ -1,89 +1,142 @@
 import { useLocation } from "react-router-dom";
-
-import NearbyAIMap from "../components/NearbyAIMap";
+import DestinationMap from "../components/DestinationMap";
+import ItineraryTimeline from "../components/ItineraryTimeline";
+import TripStory from "../components/TripStory";
+import ShareCard from "../components/ShareCard";
 import SmartRouteMap from "../components/SmartRouteMap";
+import WeatherCard from "../components/WeatherCard";
+import { extractPlaces } from "../utils/extractPlaces";
+import { generateItinerary } from "../utils/generateItinerary";
 
-function Results() {
+export default function Results() {
 
   const location = useLocation();
-  const { destination, mood, budget } = location.state || {};
+  const state = location.state || {};
 
-  const itinerary = [
-    {
-      day: "Day 1",
-      title: "Arrival & Exploration",
-      description: "Explore markets and cafes."
-    },
-    {
-      day: "Day 2",
-      title: "Adventure",
-      description: "Visit attractions and landmarks."
-    },
-    {
-      day: "Day 3",
-      title: "Hidden Gems",
-      description: "Discover peaceful spots and shopping."
-    }
-  ];
+  const destination = state.destination || "Unknown";
+  const mood = state.mood || "Adventure";
+  const budget = state.budget || "Medium";
+
+  const itinerary = generateItinerary(mood);
+
+  const places = extractPlaces(itinerary);
+
+  const heroImage =
+    `https://source.unsplash.com/1600x900/?${destination},travel`;
 
   return (
 
-    <div className="max-w-6xl mx-auto p-10">
+    <div className="min-h-screen bg-gray-50">
 
-      <h1 className="text-4xl font-bold mb-4">
-        Trip to {destination}
-      </h1>
+      {/* HERO SECTION */}
 
-      <p className="text-gray-600 mb-10">
-        Mood: {mood} | Budget: {budget}
-      </p>
+      <div
+        className="h-[45vh] bg-cover bg-center flex items-center justify-center"
+        style={{ backgroundImage: `url(${heroImage})` }}
+      >
 
-      {/* SMART ROUTE */}
+        <div className="bg-black/50 text-white px-10 py-6 rounded-xl">
 
-      <h2 className="text-2xl font-bold mb-4">
-        Smart Travel Route
-      </h2>
+          <h1 className="text-4xl font-bold">
+            Your Trip to {destination}
+          </h1>
 
-      <SmartRouteMap />
+          <p className="mt-2">
+            Mood: {mood} | Budget: {budget}
+          </p>
 
-      {/* ITINERARY */}
-
-      <h2 className="text-2xl font-bold mt-12 mb-4">
-        Itinerary
-      </h2>
-
-      <div className="grid md:grid-cols-3 gap-6">
-
-        {itinerary.map((item, i) => (
-
-          <div key={i} className="bg-white shadow rounded-xl p-6">
-
-            <h3 className="font-semibold mb-2">
-              {item.day}
-            </h3>
-
-            <p>{item.title}</p>
-
-            <p className="text-gray-500 text-sm">
-              {item.description}
-            </p>
-
-          </div>
-
-        ))}
+        </div>
 
       </div>
 
-      {/* NEARBY MAP */}
+      <div className="max-w-6xl mx-auto px-6 py-12">
 
-      <h2 className="text-2xl font-bold mt-12 mb-4">
-        Nearby Places
-      </h2>
+        {/* ITINERARY */}
 
-      <NearbyAIMap />
+        <h2 className="text-3xl font-bold mb-8">
+          AI Generated Itinerary
+        </h2>
+
+        <ItineraryTimeline itinerary={itinerary} />
+
+        {/* ROUTE MAP */}
+
+        <h2 className="text-3xl font-bold mt-16 mb-6">
+          Smart Route Map 🗺️
+        </h2>
+
+        <SmartRouteMap places={places} />
+
+        {/* DESTINATION MAP */}
+
+        <h2 className="text-3xl font-bold mt-16 mb-6">
+          Explore Destination
+        </h2>
+
+        <DestinationMap destination={destination} />
+
+        {/* WEATHER */}
+
+        <h2 className="text-3xl font-bold mt-16 mb-6">
+          Weather Forecast
+        </h2>
+
+        <WeatherCard destination={destination} />
+
+        {/* OUTFIT SUGGESTIONS */}
+
+        <h2 className="text-3xl font-bold mt-16 mb-6">
+          Outfit Suggestions
+        </h2>
+
+        <div className="bg-white p-6 rounded-xl shadow">
+
+          <ul className="space-y-2">
+
+            <li>👕 Light breathable clothes</li>
+            <li>🧢 Hat & sunglasses</li>
+            <li>👟 Comfortable walking shoes</li>
+            <li>🧴 Sunscreen & travel essentials</li>
+
+          </ul>
+
+        </div>
+
+        {/* PLAYLIST */}
+
+        <h2 className="text-3xl font-bold mt-16 mb-6">
+          Travel Playlist
+        </h2>
+
+        <iframe
+          src="https://open.spotify.com/embed/playlist/37i9dQZF1DX4WYpdgoIcn6"
+          width="100%"
+          height="380"
+          className="rounded-xl"
+        />
+
+        {/* TRIP STORY */}
+
+        <div className="mt-16">
+
+          <TripStory
+            destination={destination}
+            mood={mood}
+          />
+
+        </div>
+
+        {/* SHARE CARD */}
+
+        <div className="mt-10">
+
+          <ShareCard destination={destination} />
+
+        </div>
+
+      </div>
 
     </div>
+
   );
 }
-
-export default Results;

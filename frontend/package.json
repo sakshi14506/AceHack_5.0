@@ -12,7 +12,9 @@
   "dependencies": {
     "@react-google-maps/api": "^2.20.8",
     "axios": "^1.13.6",
+    "file-saver": "^2.0.5",
     "framer-motion": "^12.35.1",
+    "html-to-image": "^1.11.13",
     "leaflet": "^1.9.4",
     "leaflet-defaulticon-compatibility": "^0.1.2",
     "leaflet-routing-machine": "^3.2.12",
@@ -21,7 +23,10 @@
     "react-dom": "^19.2.0",
     "react-icons": "^5.5.0",
     "react-leaflet": "^5.0.0",
-    "react-router-dom": "^7.13.1"
+    "react-router-dom": "^7.13.1",
+    "react-simple-typewriter": "^5.0.1",
+    "react-tsparticles": "^2.12.2",
+    "tsparticles": "^3.9.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

@@ -1,22 +1,46 @@
-export default function ShareCard({ destination }) {
+import { toPng } from "html-to-image";
+import { saveAs } from "file-saver";
+import { useRef } from "react";
 
-  return (
+export default function ShareCard({destination}){
 
-    <div className="bg-blue-600 text-white rounded-xl p-8 mt-10 text-center">
+ const ref = useRef();
 
-      <h2 className="text-2xl font-bold mb-3">
-        Share Your Trip ✈️
-      </h2>
+ const downloadCard = async () => {
 
-      <p className="mb-5">
-        Let your friends explore your {destination} journey.
-      </p>
+  const dataUrl = await toPng(ref.current);
+  saveAs(dataUrl,"safarnama-trip.png");
 
-      <button className="bg-white text-blue-600 px-6 py-3 rounded-full">
-        Share Safarnama Story
-      </button>
+ };
 
-    </div>
+ return(
 
-  );
+  <div>
+
+   <div
+    ref={ref}
+    className="bg-gradient-to-r from-purple-500 to-blue-500 p-6 rounded-xl text-white"
+   >
+
+    <h2 className="text-2xl font-bold">
+     My {destination} Trip
+    </h2>
+
+    <p>
+     Planned with Safarnama AI ✨
+    </p>
+
+   </div>
+
+   <button
+    onClick={downloadCard}
+    className="mt-4 bg-white text-black px-4 py-2 rounded-lg"
+   >
+    Download Trip Card
+   </button>
+
+  </div>
+
+ );
+
 }
