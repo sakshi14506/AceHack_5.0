@@ -1,114 +1,114 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { useEffect, useState } from "react";
+import "leaflet/dist/leaflet.css";
 
-function NearbyAttractionsMap({ lat, lon }) {
+function NearbyAttractionsMap({ lat = 26.9124, lng = 75.7873 }) {
 
   const [places, setPlaces] = useState([]);
-  const [filter, setFilter] = useState("all");
+  const [filter, setFilter] = useState("tourism");
 
   useEffect(() => {
 
     const fetchPlaces = async () => {
 
-      let query = "";
+      let queryType = "";
 
       if (filter === "restaurants") {
-        query = `[out:json]; node["amenity"="restaurant"](around:5000,${lat},${lon}); out;`;
+        queryType = `node["amenity"="restaurant"](around:5000,${lat},${lng});`;
       }
 
-      else if (filter === "shopping") {
-        query = `[out:json]; node["shop"](around:5000,${lat},${lon}); out;`;
+      if (filter === "shopping") {
+        queryType = `node["shop"](around:5000,${lat},${lng});`;
       }
 
-      else if (filter === "temples") {
-        query = `[out:json]; node["amenity"="place_of_worship"](around:5000,${lat},${lon}); out;`;
+      if (filter === "temples") {
+        queryType = `node["amenity"="place_of_worship"](around:5000,${lat},${lng});`;
       }
 
-      else if (filter === "parks") {
-        query = `[out:json]; node["leisure"="park"](around:5000,${lat},${lon}); out;`;
+      if (filter === "parks") {
+        queryType = `node["leisure"="park"](around:5000,${lat},${lng});`;
       }
 
-      else {
-        query = `[out:json];
-        (
-          node["tourism"](around:5000,${lat},${lon});
-          node["amenity"="restaurant"](around:5000,${lat},${lon});
-          node["shop"](around:5000,${lat},${lon});
-          node["leisure"="park"](around:5000,${lat},${lon});
-        );
-        out;`;
+      if (filter === "tourism") {
+        queryType = `node["tourism"](around:5000,${lat},${lng});`;
       }
 
-      const url =
-        "https://overpass-api.de/api/interpreter?data=" +
-        encodeURIComponent(query);
+      const query = `
+      [out:json];
+      (
+        ${queryType}
+      );
+      out;
+      `;
+
+      const url = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
 
       const res = await fetch(url);
       const data = await res.json();
 
-      setPlaces(data.elements.slice(0, 20));
+      setPlaces(data.elements || []);
 
     };
 
     fetchPlaces();
 
-  }, [lat, lon, filter]);
+  }, [filter]);
 
   return (
 
-    <div className="mt-12">
+    <div>
 
-      <h2 className="text-2xl font-semibold mb-4">
-        Nearby Places
-      </h2>
+      {/* Filters */}
 
-      <div className="flex gap-3 mb-6 flex-wrap">
+      <div className="flex gap-4 mb-4">
 
-        {["all","restaurants","shopping","temples","parks"].map((f)=>(
-          <button
-            key={f}
-            onClick={()=>setFilter(f)}
-            className={`px-4 py-2 rounded-lg ${
-              filter === f ? "bg-black text-white" : "bg-gray-200"
-            }`}
-          >
-            {f}
-          </button>
-        ))}
+        <button onClick={()=>setFilter("tourism")} className="bg-purple-600 px-4 py-2 rounded">
+          Attractions
+        </button>
+
+        <button onClick={()=>setFilter("restaurants")} className="bg-purple-600 px-4 py-2 rounded">
+          Restaurants
+        </button>
+
+        <button onClick={()=>setFilter("shopping")} className="bg-purple-600 px-4 py-2 rounded">
+          Shopping
+        </button>
+
+        <button onClick={()=>setFilter("temples")} className="bg-purple-600 px-4 py-2 rounded">
+          Temples
+        </button>
+
+        <button onClick={()=>setFilter("parks")} className="bg-purple-600 px-4 py-2 rounded">
+          Parks
+        </button>
 
       </div>
 
-      <MapContainer
-        center={[lat, lon]}
-        zoom={13}
-        style={{ height: "450px", width: "100%" }}
-      >
+      {/* Map */}
 
-        <TileLayer
-          attribution="&copy; OpenStreetMap"
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+      <div className="h-[500px] rounded-xl overflow-hidden">
 
-        {places.map((place, index) => (
+        <MapContainer center={[lat,lng]} zoom={13} style={{height:"100%", width:"100%"}}>
 
-          <Marker key={index} position={[place.lat, place.lon]}>
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
 
-            <Popup>
+          {places.map((place,i)=>(
+            <Marker key={i} position={[place.lat,place.lon]}>
+              <Popup>
+                {place.tags?.name || "Unnamed place"}
+              </Popup>
+            </Marker>
+          ))}
 
-              <b>{place.tags?.name || "Location"}</b>
+        </MapContainer>
 
-            </Popup>
-
-          </Marker>
-
-        ))}
-
-      </MapContainer>
+      </div>
 
     </div>
 
   );
-
 }
 
 export default NearbyAttractionsMap;
