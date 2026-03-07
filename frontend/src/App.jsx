@@ -1,8 +1,18 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+
+import Landing from "./pages/Landing"
+import Login from "./pages/Login"
+import Planner from "./pages/Planner"
+
 function App() {
   return (
-    <div>
-      <h1>AI Travel Planner</h1>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/planner" element={<Planner />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
