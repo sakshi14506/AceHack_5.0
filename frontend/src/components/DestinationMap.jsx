@@ -1,10 +1,9 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { useEffect, useState } from "react";
-import L from "leaflet";
 
 export default function DestinationMap({ destination }) {
 
-  const [position, setPosition] = useState([28.6139, 77.2090]); // default Delhi
+  const [position, setPosition] = useState([28.6139, 77.2090]);
 
   useEffect(() => {
 
@@ -12,25 +11,14 @@ export default function DestinationMap({ destination }) {
 
     const fetchLocation = async () => {
 
-      try {
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${destination}`
+      );
 
-        const response = await fetch(
-          `https://nominatim.openstreetmap.org/search?format=json&q=${destination}`
-        );
+      const data = await res.json();
 
-        const data = await response.json();
-
-        if (data && data.length > 0) {
-
-          const lat = parseFloat(data[0].lat);
-          const lon = parseFloat(data[0].lon);
-
-          setPosition([lat, lon]);
-
-        }
-
-      } catch (error) {
-        console.error("Error fetching location:", error);
+      if (data.length > 0) {
+        setPosition([data[0].lat, data[0].lon]);
       }
 
     };

@@ -1,17 +1,42 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 function Navbar() {
-  return (
-    <nav className="absolute top-0 left-0 w-full flex justify-between items-center p-4 text-white z-50">
-      <h1 className="text-xl font-bold">Safarnama</h1>
+  const location = useLocation();
 
-      <div className="flex gap-6">
-        <Link to="/home" className="hover:text-gray-300">Home</Link>
-        <Link to="/plan" className="hover:text-gray-300">Plan Trip</Link>
-        <Link to="/destinations" className="hover:text-gray-300">Destinations</Link>
-        <Link to="/ai-planner" className="hover:text-gray-300">AI Planner</Link>
-        <Link to="/profile" className="hover:text-gray-300">Profile</Link>
-        <Link to="/notifications" className="hover:text-gray-300">Notifications</Link>
+  const links = [
+    { to: "/home", label: "Home" },
+    { to: "/planner", label: "Plan Trip" },
+    { to: "/ai-planner", label: "AI Planner" },
+    { to: "/explore", label: "Explore" },
+    { to: "/profile", label: "Profile" }
+  ];
+
+  const isActive = (path) => location.pathname === path;
+
+  return (
+    <nav className="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50">
+      <div className="max-w-6xl mx-auto flex justify-between items-center px-6 py-3">
+
+        <Link to="/home" className="text-xl font-bold text-gray-900 tracking-wide">
+          Safarnama ✈️
+        </Link>
+
+        <div className="flex gap-6">
+          {links.map((link) => (
+            <Link
+              key={link.to}
+              to={link.to}
+              className={`text-sm font-medium transition ${
+                isActive(link.to)
+                  ? "text-blue-600 border-b-2 border-blue-600 pb-1"
+                  : "text-gray-600 hover:text-blue-500"
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </div>
+
       </div>
     </nav>
   );

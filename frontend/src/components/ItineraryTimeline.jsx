@@ -16,21 +16,15 @@ export default function ItineraryTimeline({ itinerary }) {
           className="mb-10 ml-6"
         >
 
-          <span className="absolute -left-3 flex items-center justify-center w-6 h-6 bg-blue-600 rounded-full ring-8 ring-white"></span>
+          <span className="absolute -left-3 w-6 h-6 bg-blue-600 rounded-full ring-8 ring-white"></span>
 
-          <div className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+          <div className="bg-white p-6 rounded-xl shadow">
 
-            <h3 className="font-bold text-lg mb-2">
-              {item.day}
-            </h3>
+            <h3 className="font-bold text-lg">{item.day}</h3>
 
-            <p className="font-medium text-gray-800">
-              {item.title}
-            </p>
+            <p className="font-medium">{item.title}</p>
 
-            <p className="text-gray-600 text-sm mt-2">
-              {item.desc}
-            </p>
+            <p className="text-gray-600 text-sm mt-2">{item.desc}</p>
 
           </div>
 

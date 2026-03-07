@@ -8,29 +8,28 @@ import Home from "./pages/Home";
 import Planner from "./pages/Planner";
 import Results from "./pages/Results";
 import Explore from "./pages/Explore";
-import AIPlanner from "./pages/AIPlanner";
 import Profile from "./pages/Profile";
+import Share from "./pages/Share";
 
 function App() {
-
   return (
     <Router>
-
       <Routes>
 
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/otp" element={<OTP />} />
         <Route path="/personalize" element={<Personalize />} />
+
         <Route path="/home" element={<Home />} />
         <Route path="/planner" element={<Planner />} />
         <Route path="/results" element={<Results />} />
         <Route path="/explore" element={<Explore />} />
-        <Route path="/ai-planner" element={<AIPlanner />} />
+
         <Route path="/profile" element={<Profile />} />
+        <Route path="/share" element={<Share />} />
 
       </Routes>
-
     </Router>
   );
 }

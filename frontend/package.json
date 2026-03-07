@@ -12,13 +12,11 @@
   "dependencies": {
     "@react-google-maps/api": "^2.20.8",
     "axios": "^1.13.6",
-    "cors": "^2.8.6",
-    "dotenv": "^17.3.1",
-    "express": "^5.2.1",
-    "framer-motion": "^12.35.0",
+    "framer-motion": "^12.35.1",
     "leaflet": "^1.9.4",
+    "leaflet-defaulticon-compatibility": "^0.1.2",
     "leaflet-routing-machine": "^3.2.12",
-    "openai": "^6.27.0",
+    "lucide-react": "^0.577.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-icons": "^5.5.0",
@@ -35,14 +33,16 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
-    "nodemon": "^3.1.14",
     "postcss": "^8.5.8",
     "tailwindcss": "^3.4.3",
     "vite": "^7.3.1"
   },
-  "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
-  "main": "eslint.config.js",
-  "keywords": [],
+  "description": "Safarnama - AI-powered travel planner frontend",
+  "keywords": [
+    "travel",
+    "AI",
+    "planner"
+  ],
   "author": "",
   "license": "ISC"
 }

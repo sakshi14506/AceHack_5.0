@@ -1,35 +1,76 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { useEffect, useState } from "react";
 
-const NearbyAttractionsMap = ({ places }) => {
+function NearbyAttractionsMap({ lat, lon }) {
 
-  const center = [places[0]?.lat || 26.9124, places[0]?.lon || 75.7873];
+  const [places, setPlaces] = useState([]);
+  const [filter, setFilter] = useState("all");
+
+  useEffect(() => {
+
+    const fetchPlaces = async () => {
+
+      const query = `
+      [out:json];
+      node(around:5000,${lat},${lon});
+      out;
+      `;
+
+      const url =
+        "https://overpass-api.de/api/interpreter?data=" +
+        encodeURIComponent(query);
+
+      const res = await fetch(url);
+      const data = await res.json();
+
+      setPlaces(data.elements.slice(0, 20));
+
+    };
+
+    fetchPlaces();
+
+  }, [lat, lon, filter]);
 
   return (
 
-    <MapContainer
-      center={center}
-      zoom={13}
-      style={{ height: "400px" }}
-    >
+    <div className="mt-12">
 
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
+      <h2 className="text-2xl font-semibold mb-4">
+        Nearby Places
+      </h2>
 
-      {places.map((place, index) => (
+      <MapContainer
+        center={[lat, lon]}
+        zoom={13}
+        style={{ height: "450px", width: "100%" }}
+      >
 
-        <Marker key={index} position={[place.lat, place.lon]}>
+        <TileLayer
+          attribution="&copy; OpenStreetMap"
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
 
-          <Popup>{place.name}</Popup>
+        {places.map((place, index) => (
 
-        </Marker>
+          <Marker
+            key={index}
+            position={[place.lat, place.lon]}
+          >
 
-      ))}
+            <Popup>
+              {place.tags?.name || "Location"}
+            </Popup>
 
-    </MapContainer>
+          </Marker>
+
+        ))}
+
+      </MapContainer>
+
+    </div>
 
   );
 
-};
+}
 
 export default NearbyAttractionsMap;

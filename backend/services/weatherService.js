@@ -22,8 +22,7 @@ export const getWeather = async (destination) => {
 
   } catch (error) {
 
-    console.log("Weather API error:", error.message);
-
+    console.log("Weather error:", error.message);
     return null;
 
   }

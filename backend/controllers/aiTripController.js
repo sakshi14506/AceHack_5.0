@@ -1,68 +1,71 @@
-import axios from "axios";
+import openai from "../config/openai.js";
 import { getWeather } from "../services/weatherService.js";
-import { getNearbyPlaces } from "../services/placesService.js";
 
 export const generateTrip = async (req, res) => {
-
-  const { destination, mood, days } = req.body;
-
   try {
+
+    const { destination, mood } = req.body;
 
     const weather = await getWeather(destination);
 
-    const places = await getNearbyPlaces(destination);
-
     const prompt = `
-Create a travel plan for ${destination}.
+Create a 3 day travel itinerary.
 
-Mood: ${mood}
-Days: ${days}
+Destination: ${destination}
+Traveler mood: ${mood}
+
+Weather:
+Temperature: ${weather?.temperature}°C
+Condition: ${weather?.condition}
 
 Return JSON format:
 
 {
-"story":"short travel story",
-"itinerary":[
-{"day":1,"plan":"activities"},
-{"day":2,"plan":"activities"}
-]
+ "itinerary":[
+  {
+   "day":1,
+   "title":"",
+   "activities":[]
+  },
+  {
+   "day":2,
+   "title":"",
+   "activities":[]
+  },
+  {
+   "day":3,
+   "title":"",
+   "activities":[]
+  }
+ ],
+ "story":"cinematic travel story"
 }
 `;
 
-    const aiResponse = await axios.post(
-      "https://api.openai.com/v1/chat/completions",
-      {
-        model: "gpt-4o-mini",
-        messages: [
-          { role: "user", content: prompt }
-        ]
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`
-        }
-      }
-    );
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        { role: "system", content: "You are a travel planner AI." },
+        { role: "user", content: prompt }
+      ]
+    });
 
-    const aiText = aiResponse.data.choices[0].message.content;
+    const aiResponse = completion.choices[0].message.content;
 
     res.json({
-      destination,
-      mood,
-      days,
+      success: true,
       weather,
-      places,
-      story: aiText
+      trip: aiResponse
     });
 
   } catch (error) {
 
-    console.error("Trip generation error:", error.message);
+    console.error(error);
 
     res.status(500).json({
-      error: "Trip generation failed"
+      success: false,
+      message: "Trip generation failed"
     });
 
   }
-
 };

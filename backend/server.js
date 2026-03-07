@@ -1,8 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-
-import aiTripRoute from "./routes/aiTrip.js";
+import aiTripRoutes from "./routes/aiTrip.js";
 
 dotenv.config();
 
@@ -11,7 +10,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/api", aiTripRoute);
+app.get("/", (req, res) => {
+  res.send("🚀 Safarnama Backend Running");
+});
+
+app.use("/api/ai", aiTripRoutes);
 
 const PORT = process.env.PORT || 5001;
 
