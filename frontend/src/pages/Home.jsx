@@ -1,132 +1,121 @@
 import { useNavigate } from "react-router-dom";
 
 function Home() {
+
   const navigate = useNavigate();
 
-  const destinations = [
-    {
-      name: "Paris",
-      img: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34",
-    },
-    {
-      name: "Bali",
-      img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
-    },
-    {
-      name: "Dubai",
-      img: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c",
-    },
-    {
-      name: "Tokyo",
-      img: "https://images.unsplash.com/photo-1549692520-acc6669e2f0c",
-    },
-  ];
-
-  const features = [
-    { title: "AI Trip Planner", icon: "🧠", path: "/planner" },
-    { title: "Weather Outfit", icon: "🌦", path: "/planner" },
-    { title: "Travel Playlist", icon: "🎧", path: "/planner" },
-    { title: "Share Journey", icon: "📸", path: "/share" },
-  ];
-
-  const deals = [
-    {
-      title: "Beach Escapes",
-      img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
-    },
-    {
-      title: "Mountain Adventures",
-      img: "https://images.unsplash.com/photo-1501785888041-af3ef285b470",
-    },
-    {
-      title: "City Breaks",
-      img: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df",
-    },
-  ];
-
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+
+    <div className="max-w-6xl mx-auto p-10">
 
       {/* HERO SECTION */}
-      <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-10 rounded-3xl mb-10">
 
-        <h1 className="text-4xl font-bold mb-3">
-          Plan Your Next Trip with AI ✈️
+      <div className="bg-white shadow-lg rounded-2xl p-10 text-center mb-10">
+
+        <h1 className="text-4xl font-bold mb-4">
+          Welcome to Safarnama ✈️
         </h1>
 
-        <p className="mb-6 opacity-90">
-          Generate personalized travel plans instantly
+        <p className="text-gray-600 mb-6">
+          Your AI-powered travel companion. Discover destinations,
+          generate itineraries, explore nearby places and plan
+          unforgettable trips.
         </p>
 
-        <button
-          onClick={() => navigate("/planner")}
-          className="bg-white text-black px-6 py-3 rounded-lg font-semibold"
-        >
-          Start Planning
-        </button>
+        <div className="flex justify-center gap-4 flex-wrap">
 
-      </div>
-
-      {/* POPULAR DESTINATIONS */}
-      <h2 className="text-2xl font-semibold mb-6">
-        Popular Destinations
-      </h2>
-
-      <div className="grid md:grid-cols-4 gap-6 mb-12">
-
-        {destinations.map((d, i) => (
-          <div
-            key={i}
-            className="rounded-2xl overflow-hidden shadow-lg cursor-pointer hover:scale-105 transition"
+          <button
+            onClick={() => navigate("/planner")}
+            className="bg-black text-white px-6 py-3 rounded-lg hover:opacity-90"
           >
-            <img src={d.img} className="h-40 w-full object-cover" />
-            <div className="p-3 font-semibold">{d.name}</div>
-          </div>
-        ))}
+            Plan a Trip
+          </button>
 
-      </div>
-
-      {/* AI FEATURES */}
-      <h2 className="text-2xl font-semibold mb-6">
-        AI Travel Tools
-      </h2>
-
-      <div className="grid md:grid-cols-4 gap-6 mb-12">
-
-        {features.map((f, i) => (
-          <div
-            key={i}
-            onClick={() => navigate(f.path)}
-            className="bg-white p-6 rounded-2xl shadow hover:shadow-xl cursor-pointer text-center"
+          <button
+            onClick={() => navigate("/ai-planner")}
+            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:opacity-90"
           >
-            <div className="text-3xl mb-3">{f.icon}</div>
-            <div className="font-semibold">{f.title}</div>
-          </div>
-        ))}
+            Plan with AI 🤖
+          </button>
+
+          <button
+            onClick={() => navigate("/explore")}
+            className="bg-gray-200 px-6 py-3 rounded-lg hover:bg-gray-300"
+          >
+            Explore Destinations
+          </button>
+
+        </div>
 
       </div>
 
-      {/* TRAVEL INSPIRATION */}
-      <h2 className="text-2xl font-semibold mb-6">
-        Travel Inspiration
-      </h2>
+
+      {/* FEATURE CARDS */}
 
       <div className="grid md:grid-cols-3 gap-6">
 
-        {deals.map((d, i) => (
-          <div
-            key={i}
-            className="rounded-2xl overflow-hidden shadow-lg hover:scale-105 transition"
-          >
-            <img src={d.img} className="h-52 w-full object-cover" />
-            <div className="p-4 font-semibold">{d.title}</div>
-          </div>
-        ))}
+        {/* AI Planner */}
+
+        <div
+          onClick={() => navigate("/ai-planner")}
+          className="cursor-pointer bg-white shadow-md rounded-xl p-6 hover:shadow-lg"
+        >
+
+          <h3 className="text-xl font-semibold mb-2">
+            AI Trip Planner 🤖
+          </h3>
+
+          <p className="text-gray-600">
+            Chat with AI and generate personalized travel plans
+            based on your mood, budget and preferences.
+          </p>
+
+        </div>
+
+
+        {/* Smart Map */}
+
+        <div
+          onClick={() => navigate("/planner")}
+          className="cursor-pointer bg-white shadow-md rounded-xl p-6 hover:shadow-lg"
+        >
+
+          <h3 className="text-xl font-semibold mb-2">
+            Smart Travel Planner 🗺
+          </h3>
+
+          <p className="text-gray-600">
+            Select destination and mood to generate a
+            personalized itinerary with nearby places.
+          </p>
+
+        </div>
+
+
+        {/* Explore */}
+
+        <div
+          onClick={() => navigate("/explore")}
+          className="cursor-pointer bg-white shadow-md rounded-xl p-6 hover:shadow-lg"
+        >
+
+          <h3 className="text-xl font-semibold mb-2">
+            Explore Destinations 🌍
+          </h3>
+
+          <p className="text-gray-600">
+            Discover trending travel spots and get inspired
+            for your next adventure.
+          </p>
+
+        </div>
 
       </div>
 
     </div>
+
   );
+
 }
 
 export default Home;
