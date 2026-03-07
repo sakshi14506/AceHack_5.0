@@ -1,16 +1,31 @@
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
 import Navbar from "../components/Navbar";
-import InspirationSection from "../components/Inspirationsection";
+import WorldMapBackground from "../components/WorldMapBackground";
+
 import MoodSelector from "../components/MoodSelector";
 import MoodSuggestions from "../components/MoodSuggestions";
+
+import TravelTrends from "../components/TravelTrends";
+import TopDestinations from "../components/TopDestinations";
+import LuxuryDestinations from "../components/LuxuryDestinations";
+import TrendingPosts from "../components/TrendingPosts";
+import TravelPackages from "../components/TravelPackages";
+import AIAssistantCard from "../components/AIAssistantCard";
+
+import InspirationSection from "../components/Inspirationsection";
+import AIChatBubble from "../components/AIChatBubble";
+
 import { moodDestinations } from "../data/moodDestinations";
-import { useState } from "react";
 
 function Home() {
 
   const navigate = useNavigate();
   const [selectedMood, setSelectedMood] = useState("");
-  const suggestions = selectedMood ? (moodDestinations[selectedMood] || []) : [];
+
+  const suggestions =
+    selectedMood ? moodDestinations[selectedMood] || [] : [];
 
   const handleDestinationSelect = (city) => {
     navigate("/planner", { state: { destination: city } });
@@ -18,117 +33,147 @@ function Home() {
 
   return (
 
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white relative">
 
       <Navbar />
 
-      <div className="max-w-6xl mx-auto p-10">
+      {/* WORLD MAP BACKGROUND */}
+      <WorldMapBackground />
+
+      <div className="max-w-6xl mx-auto px-6 py-12 relative z-10">
 
         {/* HERO SECTION */}
 
-        <div className="bg-white shadow-lg rounded-2xl p-10 text-center mb-10">
+        <div className="relative mb-20">
 
-          <h1 className="text-4xl font-bold mb-4">
-            Welcome to Safarnama ✈️
-          </h1>
+          {/* Glow background */}
+          <div className="absolute -top-20 left-1/2 transform -translate-x-1/2 w-[700px] h-[400px] bg-blue-400 blur-[120px] opacity-30 rounded-full"></div>
 
-          <p className="text-gray-600 mb-6">
-            Your AI-powered travel companion. Discover destinations,
-            generate itineraries, explore nearby places and plan
-            unforgettable trips.
-          </p>
+          <div className="relative backdrop-blur-lg bg-white/60 border border-white/40 shadow-2xl rounded-3xl p-12 text-center">
 
-          <div className="flex justify-center gap-4 flex-wrap">
+            <h1 className="text-5xl font-bold mb-4 text-gray-900">
+              Safarnama ✈️
+            </h1>
 
-            <button
-              onClick={() => navigate("/planner")}
-              className="bg-black text-white px-6 py-3 rounded-lg hover:opacity-90 transition"
-            >
-              Plan a Trip
-            </button>
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto mb-8">
+              Your AI-powered travel companion. Discover destinations,
+              generate itineraries, explore hidden gems and plan
+              unforgettable journeys.
+            </p>
 
-            <button
-              onClick={() => navigate("/ai-planner")}
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:opacity-90 transition"
-            >
-              Plan with AI 🤖
-            </button>
+            <div className="flex justify-center gap-4 flex-wrap">
 
-            <button
-              onClick={() => navigate("/explore")}
-              className="bg-gray-200 px-6 py-3 rounded-lg hover:bg-gray-300 transition"
-            >
-              Explore Destinations
-            </button>
+              <button
+                onClick={() => navigate("/planner")}
+                className="bg-black text-white px-6 py-3 rounded-xl hover:scale-105 transition shadow-lg"
+              >
+                Plan a Trip
+              </button>
+
+              <button
+                onClick={() => navigate("/ai-planner")}
+                className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:scale-105 transition shadow-lg"
+              >
+                Plan with AI 🤖
+              </button>
+
+              <button
+                onClick={() => navigate("/explore")}
+                className="bg-gray-200 px-6 py-3 rounded-xl hover:bg-gray-300 transition"
+              >
+                Explore Destinations 🌍
+              </button>
+
+            </div>
 
           </div>
 
         </div>
 
 
-        {/* F15: Mood Selector + Suggestions wired up */}
+        {/* MOOD BASED TRAVEL */}
 
-        <MoodSelector selectedMood={selectedMood} setSelectedMood={setSelectedMood} />
+        <div className="mb-16">
 
-        <MoodSuggestions suggestions={suggestions} onSelect={handleDestinationSelect} />
+          <h2 className="text-2xl font-bold mb-6 text-gray-800">
+            How are you feeling today?
+          </h2>
 
+          <MoodSelector
+            selectedMood={selectedMood}
+            setSelectedMood={setSelectedMood}
+          />
 
-        {/* FEATURE CARDS */}
-
-        <div className="grid md:grid-cols-3 gap-6 mt-10">
-
-          <div
-            onClick={() => navigate("/ai-planner")}
-            className="cursor-pointer bg-white shadow-md rounded-xl p-6 hover:shadow-lg transition"
-          >
-            <h3 className="text-xl font-semibold mb-2">
-              AI Trip Planner 🤖
-            </h3>
-            <p className="text-gray-600">
-              Chat with AI and generate personalized travel plans
-              based on your mood, budget and preferences.
-            </p>
-          </div>
-
-          <div
-            onClick={() => navigate("/planner")}
-            className="cursor-pointer bg-white shadow-md rounded-xl p-6 hover:shadow-lg transition"
-          >
-            <h3 className="text-xl font-semibold mb-2">
-              Smart Travel Planner 🗺
-            </h3>
-            <p className="text-gray-600">
-              Select destination and mood to generate a
-              personalized itinerary with nearby places.
-            </p>
-          </div>
-
-          <div
-            onClick={() => navigate("/explore")}
-            className="cursor-pointer bg-white shadow-md rounded-xl p-6 hover:shadow-lg transition"
-          >
-            <h3 className="text-xl font-semibold mb-2">
-              Explore Destinations 🌍
-            </h3>
-            <p className="text-gray-600">
-              Discover trending travel spots and get inspired
-              for your next adventure.
-            </p>
-          </div>
+          <MoodSuggestions
+            suggestions={suggestions}
+            onSelect={handleDestinationSelect}
+          />
 
         </div>
 
 
-        {/* F15: Inspiration Section wired up */}
+        {/* TRENDING TRAVEL */}
 
-        <InspirationSection />
+        <TravelTrends />
+
+
+        {/* TOP DESTINATIONS */}
+
+        <TopDestinations />
+
+
+        {/* LUXURY DESTINATIONS */}
+
+        <LuxuryDestinations />
+
+
+        {/* COMMUNITY TRAVEL POSTS */}
+
+        <TrendingPosts />
+
+
+        {/* TRAVEL PACKAGES */}
+
+        <TravelPackages />
+
+
+        {/* AI ASSISTANT PROMO */}
+
+        <AIAssistantCard />
+
+
+        {/* TRAVEL INSPIRATION */}
+
+        <div className="mt-20">
+
+          <h2 className="text-2xl font-bold mb-6 text-gray-800">
+            Travel Inspiration
+          </h2>
+
+          <InspirationSection />
+
+        </div>
 
       </div>
+
+
+      {/* FLOATING PLAN BUTTON */}
+
+      <button
+        onClick={() => navigate("/planner")}
+        className="fixed bottom-6 left-6 bg-black text-white px-6 py-3 rounded-full shadow-xl hover:scale-105 transition"
+      >
+        Plan My Trip ✈️
+      </button>
+
+
+      {/* AI CHAT BUBBLE */}
+
+      <AIChatBubble />
 
     </div>
 
   );
-
 }
 
 export default Home;
