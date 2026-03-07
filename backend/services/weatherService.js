@@ -1,30 +1,31 @@
-import fetch from "node-fetch";
-import dotenv from "dotenv";
+import axios from "axios";
 
-dotenv.config();
+export const getWeather = async (destination) => {
 
-export const getWeather = async (city) => {
   try {
 
-    const url = `http://api.weatherapi.com/v1/current.json?key=${process.env.WEATHER_API_KEY}&q=${city}&aqi=yes`;
-
-    const response = await fetch(url);
-    const data = await response.json();
+    const response = await axios.get(
+      "http://api.weatherapi.com/v1/current.json",
+      {
+        params: {
+          key: process.env.WEATHER_API_KEY,
+          q: destination
+        }
+      }
+    );
 
     return {
-      city: data.location.name,
-      country: data.location.country,
-      temperature: data.current.temp_c,
-      condition: data.current.condition.text,
-      icon: data.current.condition.icon,
-      humidity: data.current.humidity,
-      wind: data.current.wind_kph
+      temperature: response.data.current.temp_c,
+      condition: response.data.current.condition.text,
+      icon: response.data.current.condition.icon
     };
 
   } catch (error) {
 
-    console.error("Weather API Error:", error);
+    console.log("Weather API error:", error.message);
+
     return null;
 
   }
+
 };

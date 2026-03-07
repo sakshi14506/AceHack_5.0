@@ -1,54 +1,68 @@
-const generateTrip = async (req, res) => {
+import axios from "axios";
+import { getWeather } from "../services/weatherService.js";
+import { getNearbyPlaces } from "../services/placesService.js";
+
+export const generateTrip = async (req, res) => {
+
+  const { destination, mood, days } = req.body;
 
   try {
 
-    const { destination, mood } = req.body;
+    const weather = await getWeather(destination);
 
-    const trip = {
+    const places = await getNearbyPlaces(destination);
+
+    const prompt = `
+Create a travel plan for ${destination}.
+
+Mood: ${mood}
+Days: ${days}
+
+Return JSON format:
+
+{
+"story":"short travel story",
+"itinerary":[
+{"day":1,"plan":"activities"},
+{"day":2,"plan":"activities"}
+]
+}
+`;
+
+    const aiResponse = await axios.post(
+      "https://api.openai.com/v1/chat/completions",
+      {
+        model: "gpt-4o-mini",
+        messages: [
+          { role: "user", content: prompt }
+        ]
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`
+        }
+      }
+    );
+
+    const aiText = aiResponse.data.choices[0].message.content;
+
+    res.json({
       destination,
       mood,
-      weather: {
-        temperature: 27,
-        condition: "Sunny"
-      },
-      story: `Your ${mood} journey to ${destination} begins with vibrant streets, local culture and unforgettable memories.`,
-      itinerary: [
-        {
-          day: 1,
-          activities: [
-            "Explore local markets",
-            "Visit famous landmark",
-            "Try local food"
-          ]
-        },
-        {
-          day: 2,
-          activities: [
-            "Visit museums",
-            "Explore historical sites",
-            "Evening city walk"
-          ]
-        },
-        {
-          day: 3,
-          activities: [
-            "Sunrise viewpoint",
-            "Local shopping",
-            "Cultural performance"
-          ]
-        }
-      ]
-    };
-
-    res.json(trip);
+      days,
+      weather,
+      places,
+      story: aiText
+    });
 
   } catch (error) {
 
-    console.error(error);
-    res.status(500).json({ error: "Failed to generate trip" });
+    console.error("Trip generation error:", error.message);
+
+    res.status(500).json({
+      error: "Trip generation failed"
+    });
 
   }
 
 };
-
-export default generateTrip;
