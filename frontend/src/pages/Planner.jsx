@@ -1,49 +1,70 @@
-import PlannerSearch from "../components/PlannerSearch";
-import InspirationSection from "../components/InspirationSection";
+import { useState } from "react";
+import MoodSelector from "../components/MoodSelector";
+import MoodSuggestions from "../components/MoodSuggestions";
+import { moodDestinations } from "../data/moodDestinations";
+import { useNavigate } from "react-router-dom";
 
-export default function Planner() {
+function Planner() {
+  const [destination, setDestination] = useState("");
+  const [selectedMood, setSelectedMood] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+
+  const navigate = useNavigate();
+
+  const generateTrip = () => {
+    if (selectedMood) {
+      const results = moodDestinations[selectedMood];
+      setSuggestions(results);
+    }
+  };
+
+  const selectDestination = (city) => {
+    setDestination(city);
+    navigate("/results", { state: { destination: city } });
+  };
 
   return (
+    <div className="p-10 max-w-4xl mx-auto">
 
-    <div className="min-h-screen bg-gray-50">
+      <h1 className="text-3xl font-bold mb-6">
+        Plan Your Journey
+      </h1>
 
-      {/* HERO */}
+      {/* Destination Input */}
 
-      <div
-        className="h-[60vh] bg-cover bg-center flex items-center justify-center"
-        style={{
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e')"
-        }}
+      <input
+        type="text"
+        placeholder="Enter destination"
+        value={destination}
+        onChange={(e) => setDestination(e.target.value)}
+        className="border p-3 w-full rounded-lg"
+      />
+
+      {/* Mood Selector */}
+
+      <MoodSelector
+        selectedMood={selectedMood}
+        setSelectedMood={setSelectedMood}
+      />
+
+      {/* Generate Button */}
+
+      <button
+        onClick={generateTrip}
+        className="mt-6 bg-black text-white px-6 py-3 rounded-lg"
       >
+        Generate Trip
+      </button>
 
-        <div className="text-center text-white">
+      {/* Suggestions */}
 
-          <h1 className="text-5xl font-bold mb-4">
-            Plan Your Perfect Trip
-          </h1>
-
-          <p className="text-lg opacity-90">
-            AI-powered travel planning in seconds
-          </p>
-
-        </div>
-
-      </div>
-
-      {/* SEARCH CARD */}
-
-      <div className="-mt-24 px-6">
-
-        <PlannerSearch />
-
-      </div>
-
-      {/* INSPIRATION */}
-
-      <InspirationSection />
+      <MoodSuggestions
+        suggestions={suggestions}
+        onSelect={selectDestination}
+      />
 
     </div>
-
   );
 }
+
+export default Planner;

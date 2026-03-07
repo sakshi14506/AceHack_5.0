@@ -1,86 +1,123 @@
 import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import NearbyAttractionsMap from "../components/NearbyAttractionsMap";
 import TripStory from "../components/TripStory";
-import ShareCard from "../components/ShareCard";
 
-export default function Results() {
+function Results() {
 
   const location = useLocation();
+  const destination = location.state?.destination || "Unknown Destination";
 
-  const { destination, mood, budget } = location.state || {};
+  const [coords, setCoords] = useState(null);
 
   const itinerary = [
     {
       day: "Day 1",
-      title: "Arrival & Local Exploration",
-      desc: "Check into your hotel, explore nearby markets and enjoy local cuisine."
+      plan: "Arrival, explore local markets and try authentic local cuisine."
     },
     {
       day: "Day 2",
-      title: "Landmarks & Culture",
-      desc: "Visit iconic landmarks, museums and discover hidden cafes."
+      plan: "Visit famous attractions, museums and scenic viewpoints."
     },
     {
       day: "Day 3",
-      title: "Adventure & Sunset",
-      desc: "Enjoy adventure activities and finish with a scenic sunset."
+      plan: "Relax in cafes, explore hidden streets and enjoy sunset spots."
     }
   ];
 
+  const getDestinationImage = (destination) => {
+    return `https://source.unsplash.com/1600x600/?${destination},travel`;
+  };
+
+  useEffect(() => {
+
+    const fetchCoords = async () => {
+
+      try {
+
+        const res = await fetch(
+          `https://nominatim.openstreetmap.org/search?format=json&q=${destination}`
+        );
+
+        const data = await res.json();
+
+        if (data.length > 0) {
+
+          setCoords({
+            lat: parseFloat(data[0].lat),
+            lon: parseFloat(data[0].lon)
+          });
+
+        }
+
+      } catch (error) {
+
+        console.error("Error fetching coordinates:", error);
+
+      }
+
+    };
+
+    fetchCoords();
+
+  }, [destination]);
+
   return (
 
-    <div className="min-h-screen bg-gray-50">
+    <div className="p-10 max-w-6xl mx-auto">
 
-      {/* HERO HEADER */}
+      {/* HERO SECTION */}
 
-      <div
-        className="h-[40vh] bg-cover bg-center flex items-center justify-center"
-        style={{
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e')"
-        }}
-      >
+      <div className="relative mb-12">
 
-        <div className="bg-black/40 p-8 rounded-xl text-white text-center">
+        <img
+          src={getDestinationImage(destination)}
+          alt={destination}
+          className="w-full h-[350px] object-cover rounded-2xl"
+        />
 
-          <h1 className="text-4xl font-bold">
-            Your Trip to {destination}
-          </h1>
+        <div className="absolute inset-0 bg-black/40 rounded-2xl flex items-center justify-center">
 
-          <p className="mt-2 opacity-90">
-            Mood: {mood} | Budget: {budget}
-          </p>
+          <div className="text-center text-white">
+
+            <h1 className="text-5xl font-bold mb-2">
+              {destination}
+            </h1>
+
+            <p className="text-lg">
+              Your AI Generated Travel Plan
+            </p>
+
+          </div>
 
         </div>
 
       </div>
 
-      <div className="max-w-6xl mx-auto px-6 py-12">
 
-        {/* ITINERARY */}
+      {/* ITINERARY */}
 
-        <h2 className="text-3xl font-bold mb-6">
-          AI Generated Itinerary
+      <div className="mb-12">
+
+        <h2 className="text-2xl font-semibold mb-6">
+          Suggested Itinerary
         </h2>
 
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
+        <div className="space-y-4">
 
           {itinerary.map((item, index) => (
 
             <div
               key={index}
-              className="bg-white rounded-xl shadow p-6 hover:shadow-lg transition"
+              className="p-6 backdrop-blur-lg bg-white/70 border border-white/40 rounded-2xl shadow-lg"
             >
 
-              <h3 className="text-lg font-semibold mb-2">
+              <h3 className="font-semibold text-lg">
                 {item.day}
               </h3>
 
-              <p className="font-medium mb-2">
-                {item.title}
-              </p>
-
-              <p className="text-gray-600 text-sm">
-                {item.desc}
+              <p className="text-gray-600">
+                {item.plan}
               </p>
 
             </div>
@@ -89,86 +126,29 @@ export default function Results() {
 
         </div>
 
-        {/* WEATHER */}
-
-        <h2 className="text-3xl font-bold mb-6">
-          Weather Forecast
-        </h2>
-
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
-
-          <div className="bg-white rounded-xl p-6 shadow text-center">
-            ☀️
-            <p className="font-semibold mt-2">Day 1</p>
-            <p className="text-gray-600">28°C Sunny</p>
-          </div>
-
-          <div className="bg-white rounded-xl p-6 shadow text-center">
-            ⛅
-            <p className="font-semibold mt-2">Day 2</p>
-            <p className="text-gray-600">26°C Cloudy</p>
-          </div>
-
-          <div className="bg-white rounded-xl p-6 shadow text-center">
-            🌧
-            <p className="font-semibold mt-2">Day 3</p>
-            <p className="text-gray-600">24°C Light Rain</p>
-          </div>
-
-        </div>
-
-        {/* OUTFIT SUGGESTIONS */}
-
-        <h2 className="text-3xl font-bold mb-6">
-          Outfit Suggestions
-        </h2>
-
-        <div className="bg-white rounded-xl shadow p-6 mb-12">
-
-          <ul className="space-y-3 text-gray-700">
-
-            <li>👕 Light cotton clothes for warm weather</li>
-
-            <li>🧢 Hat & sunglasses for sunny afternoons</li>
-
-            <li>👟 Comfortable walking shoes</li>
-
-            <li>🧥 Light jacket for evenings</li>
-
-          </ul>
-
-        </div>
-
-        {/* SPOTIFY PLAYLIST */}
-
-        <h2 className="text-3xl font-bold mb-6">
-          Travel Playlist
-        </h2>
-
-        <div className="bg-white rounded-xl shadow p-4 mb-12">
-
-          <iframe
-            src="https://open.spotify.com/embed/playlist/37i9dQZF1DX4WYpdgoIcn6"
-            width="100%"
-            height="380"
-            allow="encrypted-media"
-            className="rounded-xl"
-            title="Spotify Playlist"
-          />
-
-        </div>
-
-        {/* AI TRAVEL STORY */}
-
-        <TripStory destination={destination} mood={mood} />
-
-        {/* SHARE CARD */}
-
-        <ShareCard destination={destination} />
-
       </div>
+
+
+      {/* AI STORY */}
+
+      <TripStory destination={destination} />
+
+
+      {/* MAP */}
+
+      {coords && (
+
+        <NearbyAttractionsMap
+          lat={coords.lat}
+          lon={coords.lon}
+        />
+
+      )}
 
     </div>
 
   );
+
 }
+
+export default Results;

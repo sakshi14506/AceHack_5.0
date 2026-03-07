@@ -1,36 +1,44 @@
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
-export default function TripStory({ destination, mood }) {
+function TripStory({ destination }) {
 
-  const story = `
-Your journey to ${destination} begins with excitement in the air.
-The vibe of the trip is ${mood}, so expect beautiful moments,
-local food discoveries, and unforgettable experiences.
+  const [story, setStory] = useState("");
 
-Day 1 welcomes you with stunning views and cultural exploration.
-Day 2 is about diving deeper into the local lifestyle and hidden gems.
-Day 3 wraps up the adventure with memories that stay forever.
+  useEffect(() => {
 
-Safarnama believes every journey is a story waiting to be told.
-`;
+    const stories = [
+
+      `Your journey to ${destination} begins with excitement in the air. As you arrive, vibrant streets and local culture welcome you.`,
+
+      `In ${destination}, every corner has a story waiting to be discovered. From scenic views to local markets, the adventure unfolds.`,
+
+      `Imagine waking up in ${destination} with endless exploration ahead. Cafes, landscapes and unforgettable memories await.`
+
+    ];
+
+    const randomStory =
+      stories[Math.floor(Math.random() * stories.length)];
+
+    setStory(randomStory);
+
+  }, [destination]);
 
   return (
 
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      className="bg-white p-8 rounded-2xl shadow-lg mt-12"
-    >
+    <div className="mt-12 p-6 bg-white rounded-2xl shadow-md">
 
-      <h2 className="text-2xl font-bold mb-4">
-        ✨ Your Travel Story
+      <h2 className="text-2xl font-semibold mb-4">
+        Your Travel Story ✨
       </h2>
 
       <p className="text-gray-700 leading-relaxed">
         {story}
       </p>
 
-    </motion.div>
+    </div>
+
   );
+
 }
+
+export default TripStory;
