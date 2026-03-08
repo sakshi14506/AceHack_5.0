@@ -2,14 +2,14 @@ import { useState } from "react";
 import { MapContainer, TileLayer, Marker, Polyline, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
-export default function SmartRouteMap({ places }) {
+export default function SmartRouteMap({ places = [] }) {
 
   const [filter, setFilter] = useState("all");
 
   const filteredPlaces =
     filter === "all"
       ? places
-      : places.filter((p) => p.type === filter);
+      : places?.filter((p) => p.type === filter);
 
   const positions = filteredPlaces.map((p) => p.coords);
 
@@ -73,10 +73,12 @@ export default function SmartRouteMap({ places }) {
 
         ))}
 
-        <Polyline
-          positions={positions}
-          pathOptions={{ color: "blue", weight: 4 }}
-        />
+        {positions.length > 1 && (
+          <Polyline
+            positions={positions}
+            pathOptions={{ color: "blue", weight: 4 }}
+          />
+        )}
 
       </MapContainer>
 

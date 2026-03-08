@@ -45,28 +45,31 @@ function Personalize() {
 
   return (
     <div
-      className="min-h-screen bg-cover bg-center flex items-center justify-center relative p-6"
+      className="min-h-screen bg-cover bg-center flex items-center justify-center relative p-4 sm:p-6"
       style={{ backgroundImage: `url(${bg})` }}
     >
       {/* overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/50 to-indigo-900/50"></div>
 
       {/* card */}
-      <div className="relative backdrop-blur-2xl bg-white/8 border border-white/15
-      shadow-2xl p-10 rounded-3xl w-[540px] text-white animate-fade">
-
+      <div
+        className="relative backdrop-blur-2xl bg-white/10 border border-white/20
+        shadow-2xl p-6 sm:p-8 md:p-10 rounded-3xl w-full max-w-[540px]
+        text-white animate-fade max-h-[90vh] overflow-y-auto"
+      >
         {/* Step Progress */}
         <div className="mb-6">
           <div className="flex justify-between text-xs text-white/50 mb-2 uppercase tracking-wider">
             <span>Step 1</span>
             <span>Step 3</span>
           </div>
+
           <div className="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
             <div className="bg-gradient-to-r from-blue-400 to-indigo-400 h-1.5 rounded-full w-1/3 transition-all duration-500"></div>
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold mb-2 text-center">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-2 text-center">
           Personalize Your Journey ✈️
         </h2>
 
@@ -75,7 +78,7 @@ function Personalize() {
         </p>
 
         {/* BASIC INFO */}
-        <div className="grid grid-cols-2 gap-3 mb-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
           <input
             placeholder="Name"
             className="p-3 rounded-xl bg-white/10 border border-white/15
@@ -84,6 +87,7 @@ function Personalize() {
               setFormData({ ...formData, name: e.target.value })
             }
           />
+
           <input
             placeholder="Age"
             type="number"
@@ -93,9 +97,10 @@ function Personalize() {
               setFormData({ ...formData, age: e.target.value })
             }
           />
+
           <input
             placeholder="City"
-            className="p-3 rounded-xl bg-white/10 border border-white/15 col-span-2
+            className="p-3 rounded-xl bg-white/10 border border-white/15 sm:col-span-2
             focus:ring-2 focus:ring-indigo-400 focus:bg-white/15 outline-none placeholder-white/40 transition-all duration-300"
             onChange={(e) =>
               setFormData({ ...formData, city: e.target.value })
@@ -111,14 +116,18 @@ function Personalize() {
             setFormData({ ...formData, gender: e.target.value })
           }
         >
-          <option value="" className="text-gray-900">Select Gender</option>
+          <option value="" className="text-gray-900">
+            Select Gender
+          </option>
           <option className="text-gray-900">Male</option>
           <option className="text-gray-900">Female</option>
           <option className="text-gray-900">Other</option>
         </select>
 
         {/* MOOD */}
-        <h3 className="mb-3 font-medium text-sm uppercase tracking-wider text-white/60">Your Travel Mood</h3>
+        <h3 className="mb-3 font-medium text-sm uppercase tracking-wider text-white/60">
+          Your Travel Mood
+        </h3>
 
         <div className="grid grid-cols-2 gap-3 mb-5">
           {moods.map((mood) => (
@@ -141,9 +150,11 @@ function Personalize() {
         </div>
 
         {/* INTERESTS */}
-        <h3 className="mb-3 font-medium text-sm uppercase tracking-wider text-white/60">Your Interests</h3>
+        <h3 className="mb-3 font-medium text-sm uppercase tracking-wider text-white/60">
+          Your Interests
+        </h3>
 
-        <div className="flex flex-wrap gap-2 mb-5">
+        <div className="flex flex-wrap gap-2 mb-5 justify-center sm:justify-start">
           {interestsList.map((interest) => (
             <button
               key={interest}
@@ -168,7 +179,9 @@ function Personalize() {
             setFormData({ ...formData, budget: e.target.value })
           }
         >
-          <option value="" className="text-gray-900">Budget</option>
+          <option value="" className="text-gray-900">
+            Budget
+          </option>
           <option className="text-gray-900">Low</option>
           <option className="text-gray-900">Medium</option>
           <option className="text-gray-900">Luxury</option>
@@ -182,7 +195,9 @@ function Personalize() {
             setFormData({ ...formData, weather: e.target.value })
           }
         >
-          <option value="" className="text-gray-900">Preferred Weather</option>
+          <option value="" className="text-gray-900">
+            Preferred Weather
+          </option>
           <option className="text-gray-900">Cold ❄️</option>
           <option className="text-gray-900">Warm ☀️</option>
           <option className="text-gray-900">Snow ⛄</option>
@@ -192,13 +207,12 @@ function Personalize() {
         {/* BUTTON */}
         <button
           onClick={() => navigate("/home")}
-          className="w-full py-3.5 rounded-xl font-semibold text-black
+          className="w-full py-3 sm:py-3.5 rounded-xl font-semibold text-black
           bg-gradient-to-r from-white to-gray-100
           hover:scale-[1.02] hover:shadow-xl hover:shadow-white/20 transition-all duration-300"
         >
           Continue →
         </button>
-
       </div>
     </div>
   );
